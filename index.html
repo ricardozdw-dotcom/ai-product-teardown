@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>AI 产品拆解 Skill</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; line-height: 1.65; max-width: 720px; margin: 2.5rem auto; padding: 0 1.25rem; }
+  h1 { font-size: 1.75rem; margin-bottom: .35rem; }
+  .sub { opacity: .75; margin-bottom: 1.75rem; }
+  a { color: #1a6fb5; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+  pre { background: rgba(127,127,127,.12); padding: 1rem; border-radius: 8px; overflow: auto; }
+  .card { border: 1px solid rgba(127,127,127,.25); border-radius: 12px; padding: 1rem 1.1rem; margin: 1.25rem 0; }
+  ul { padding-left: 1.2rem; }
+</style>
+</head>
+<body>
+  <h1>AI 产品拆解</h1>
+  <p class="sub">面向 Cursor / Grok Bot 的可复用 Skill：用五问五层拆解 AI 产品，输出飞书 / Markdown / HTML。</p>
+
+  <div class="card">
+    <p><strong>仓库文件</strong></p>
+    <ul>
+      <li><code>SKILL.md</code> — Skill 正文（复制到 Agent 的 workflows 即可用）</li>
+      <li><a href="./examples-tingwu-teardown.html">通义听悟拆解示例</a>（HTML 报告）</li>
+    </ul>
+  </div>
+
+  <h2>怎么用</h2>
+  <ol>
+    <li>把本仓库的 <code>SKILL.md</code> 放进 Agent 的 Skill / workflows 目录。</li>
+    <li>对助手说：「按 AI 产品拆解 Skill 拆 XXX」，并指定输出形态（飞书 / Markdown / HTML）。</li>
+    <li>先确认产品形态（网页 / App / 其他），再取证；结论标「已确认 / 待确认核实」，文末附二次验证清单。</li>
+  </ol>
+
+  <h2>源码</h2>
+  <p><a href="https://github.com/ricardozdw-dotcom/ai-product-teardown">github.com/ricardozdw-dotcom/ai-product-teardown</a></p>
+</body>
+</html>

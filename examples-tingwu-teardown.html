@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>通义听悟 · AI 产品拆解报告</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #fff;
+    --text: #1a1a1a;
+    --muted: #5c6570;
+    --line: #e6e8ec;
+    --ok: #0f7b3a;
+    --ok-bg: #e8f7ee;
+    --warn: #9a6700;
+    --warn-bg: #fff6e0;
+    --todo: #b42318;
+    --todo-bg: #feeceb;
+    --accent: #1677ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "PingFang SC", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.65;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 64px; }
+  header.hero {
+    background: linear-gradient(135deg, #0b1f3a, #163a6b 55%, #1f6feb);
+    color: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+  }
+  header.hero h1 { margin: 0 0 8px; font-size: 1.65rem; }
+  header.hero p { margin: 0; opacity: .92; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip {
+    display: inline-block;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.16);
+  }
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  nav.toc strong { display: block; margin-bottom: 8px; }
+  nav.toc a { color: var(--accent); text-decoration: none; margin-right: 12px; font-size: 14px; }
+  section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 16px;
+  }
+  h2 { margin: 0 0 12px; font-size: 1.25rem; }
+  h3 { margin: 18px 0 8px; font-size: 1.05rem; }
+  h4 { margin: 14px 0 6px; font-size: .95rem; color: #333; }
+  p, li { font-size: 15px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 10px 0 6px;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    vertical-align: top;
+    text-align: left;
+  }
+  th { background: #f3f5f8; }
+  .tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+  .tag-ok { color: var(--ok); background: var(--ok-bg); }
+  .tag-warn { color: var(--warn); background: var(--warn-bg); }
+  .tag-todo { color: var(--todo); background: var(--todo-bg); }
+  .formula {
+    background: #f0f5ff;
+    border-left: 4px solid var(--accent);
+    padding: 12px 14px;
+    border-radius: 0 8px 8px 0;
+    margin: 10px 0;
+  }
+  .arch {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .arch .box {
+    border: 1px dashed #9db7e8;
+    background: #f7faff;
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .arch .box b { display: block; margin-bottom: 4px; }
+  ul.verify { padding-left: 18px; }
+  ul.verify li { margin-bottom: 8px; }
+  footer {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+  }
+  a { color: var(--accent); }
+  .summary {
+    background: #111827;
+    color: #f9fafb;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+  }
+  .summary h2 { color: #fff; }
+  .summary li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>以通义听悟为例拆解一个音视频智能纪要产品</h1>
+    <p>按 AI 产品拆解 Skill · 五问五层 · 网页 C 端为主（API 作对照）</p>
+    <div class="meta">
+      <span class="chip">形态：网页产品（另有微信小程序入口公开记录）</span>
+      <span class="chip">取证日：2026-10-19（Asia/Shanghai）</span>
+      <span class="chip">输出：HTML 报告</span>
+    </div>
+  </header>
+
+  <div class="summary">
+    <h2>三句话摘要</h2>
+    <ol>
+      <li><b>定位：</b>一款给职场人与学习者用的、在开会/听课/听播客时、解决「记不全、纪要慢」的音视频智能纪要助手。</li>
+      <li><b>形态判断：</b>主路径接近 <b>Workflow</b>（录音/上传 → 固定转写管线 → 可选大模型能力包）；不是开放式多 Agent 协作平台。</li>
+      <li><b>最厚壁垒：</b>偏 <b>基础层 + 模型层组合</b>——阿里云 ASR/通义能力栈与企业 API/私有化入口；C 端配额靠签到赠时长，公开页未见人民币标价。</li>
+    </ol>
+  </div>
+
+  <nav class="toc">
+    <strong>目录</strong>
+    <a href="#s1">拆解思路</a>
+    <a href="#s2">产品介绍</a>
+    <a href="#s5">分层拆解</a>
+    <a href="#s6">架构总结</a>
+    <a href="#s7">二次验证清单</a>
+    <a href="#s8">附录</a>
+  </nav>
+
+  <section id="s1">
+    <h2>（一）拆解思路</h2>
+    <p>用户需求场景 → 用户层 → 技术层 → 模型层 → 基础层；每条结论标证据标签。</p>
+    <p><span class="tag tag-ok">已确认</span>本次取证范围：官网首页与 App Home、登录墙、公开样例记录页、C 端帮助中心与「权益加油站」、阿里云帮助中心 API 功能/计费页。新建实时记录被登录墙拦住，未完成真人麦克风全流程。</p>
+    <p class="muted">方法论：W3D1 五问五层；证据纪律：已确认 / 待确认核实 / 待核实二次验证清单。</p>
+  </section>
+
+  <section id="s2">
+    <h2>（二）产品介绍</h2>
+    <div class="formula">
+      一款给<strong>职场开会的人、听网课/播客的学习者</strong>用的、在<strong>实时会议与音视频回放</strong>场景下、解决<strong>「记不全细节、纪要写得慢」</strong>的<strong>工作学习 AI 助手（音视频转写 + 智能纪要）</strong>。
+    </div>
+    <ul>
+      <li><span class="tag tag-ok">已确认</span>官网口号「万语千言 · 心领神悟」；能力表述含实时语音转文字、多语言同步翻译、区分发言人、章节速览/待办/发言总结等。<a href="https://tingwu.aliyun.com/">tingwu.aliyun.com</a></li>
+      <li><span class="tag tag-ok">已确认</span>首页三条主入口：开启实时记录、上传音视频、播客链接转写。</li>
+      <li><span class="tag tag-ok">已确认</span>侧栏信息架构：首页 / 我的记录 / 收藏 / 分享 / 发现 / 回收站 / 帮助与反馈；另有企业 API、低代码模板入口。</li>
+      <li><span class="tag tag-warn">待确认核实</span>帮助中心有「如何在手机上使用」文章；产品动态历史写过「网站及微信小程序」。本次未验证小程序现网能力是否与网页对等。</li>
+    </ul>
+  </section>
+
+  <section id="s5">
+    <h2>（五）分层拆解</h2>
+
+    <h3>01 用户需求场景 — 用户为什么用它？</h3>
+    <table>
+      <thead><tr><th>角色</th><th>是谁</th><th>为什么用</th><th>标签</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>用的人</td>
+          <td>开会的职场人、学习者</td>
+          <td>少记笔记，会后快速拿到纪要/笔记</td>
+          <td><span class="tag tag-ok">已确认</span>用户故事与首页文案</td>
+        </tr>
+        <tr>
+          <td>买单的人</td>
+          <td>个人（C 端赠时长）或企业（API/套件）</td>
+          <td>C 端以登录赠时长为主；企业按量付 ASR+大模型</td>
+          <td><span class="tag tag-ok">已确认</span>权益页 + API 计费页</td>
+        </tr>
+        <tr>
+          <td>验收的人</td>
+          <td>个人自己；企业可能是业务/IT</td>
+          <td>转写是否准、纪要是否能直接用</td>
+          <td><span class="tag tag-warn">待确认核实</span>企业验收指标未在 C 端页看到</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>02 用户层 — 怎么用它把这件事做完？</h3>
+    <h4>正向五步（以「上传/样例回看」为主；实时记录未登录未跑通）</h4>
+    <table>
+      <thead><tr><th></th><th>① 入口</th><th>② 输入</th><th>③ 过程</th><th>④ 输出</th><th>⑤ 交付</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>用户做什么</td>
+          <td>打开官网 → 立即体验 /home</td>
+          <td>选：实时记录 / 上传音视频 / 播客链接</td>
+          <td>等转写与智能速览生成</td>
+          <td>看原文、章节、发言总结、要点、右侧笔记</td>
+          <td>分享、收藏、导出（样例页可见入口）</td>
+        </tr>
+        <tr>
+          <td>产品给什么</td>
+          <td>三卡片 + 快速入门样例</td>
+          <td>未登录点实时记录 → 登录弹窗</td>
+          <td>样例有播放器、字幕、加载态</td>
+          <td>智能速览关键词、全文概要、多 Tab；AI 免责声明</td>
+          <td>分享/收藏/体验通义听悟 CTA</td>
+        </tr>
+        <tr>
+          <td>确认点</td>
+          <td>—</td>
+          <td><b>⚑ 登录</b>（扫码/账密/手机号 + 协议勾选）</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="tag tag-todo">待核实</span>导出格式与权限</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted">样例页：<a href="https://tingwu.aliyun.com/doc/transcripts/gpjbqkvb2gknk2ao">示例上课记录</a></p>
+
+    <h4>异常四条</h4>
+    <table>
+      <thead><tr><th>异常</th><th>观察</th><th>标签</th></tr></thead>
+      <tbody>
+        <tr><td>信息给不全</td><td>未登录被挡在入口，谈不上追问补全录音上下文</td><td><span class="tag tag-warn">待确认核实</span></td></tr>
+        <tr><td>失败</td><td>样例曾显示「视频加载中」；失败是否退时长未在帮助页本次读到明确条文</td><td><span class="tag tag-todo">待核实</span></td></tr>
+        <tr><td>中途改主意</td><td>未实测是否可中途停录/重开任务</td><td><span class="tag tag-todo">待核实</span></td></tr>
+        <tr><td>不满意</td><td>样例有多 Tab 与笔记区，未见「只改某一章摘要」的明确局部重生成控件</td><td><span class="tag tag-warn">待确认核实</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>03 技术层 — 哪一步 AI 做，哪一步人做？</h3>
+    <table>
+      <thead><tr><th>步骤</th><th>AI 做</th><th>人做</th><th>确认点</th><th>为什么要人</th></tr></thead>
+      <tbody>
+        <tr><td>登录与开通</td><td>—</td><td>登录/同意协议</td><td>登录弹窗</td><td>担责 · 账号</td></tr>
+        <tr><td>发起记录</td><td>—</td><td>选实时/上传/播客链</td><td>提交前（推断）</td><td>主观 · 耗时长额度</td></tr>
+        <tr><td>ASR 转写 + 说话人</td><td>流式/离线转写、分说话人</td><td>—</td><td>无（过程可见播放与原文）</td><td>—</td></tr>
+        <tr><td>智能速览包</td><td>摘要、章节、发言总结、关键词、待办等</td><td>切换 Tab、阅读筛选</td><td>无强制审方案</td><td>可改回来则偏弱确认</td></tr>
+        <tr><td>导出/分享</td><td>—</td><td>决定是否外发</td><td><span class="tag tag-todo">待核实</span></td><td>担责</td></tr>
+      </tbody>
+    </table>
+    <p><span class="tag tag-ok">已确认</span><b>形态：Workflow 为主。</b>能力以「转写前置 + 可选大模型能力清单」组合（帮助中心功能表），下一步不是开放式 Agent 自规划长任务；也未见多 Agent 小队编排 UI。</p>
+    <p><span class="tag tag-warn">待确认核实</span>百炼文档称「智能纪要 Agent」，偏营销/能力命名；C 端交互仍是固定管线 + 结果面板，不等于 Manus 式 Agent。</p>
+
+    <h3>04 模型层 — 用什么模型，花多少钱？</h3>
+    <table>
+      <thead><tr><th>AI 步骤</th><th>模态</th><th>模型/档位</th><th>自研/外接</th><th>能否换</th><th>标签</th></tr></thead>
+      <tbody>
+        <tr><td>语音转写</td><td>语音→文本</td><td>页面未写具体 ASR 型号</td><td>阿里云听悟链路（推断）</td><td>C 端未见自选</td><td><span class="tag tag-warn">待确认核实</span></td></tr>
+        <tr><td>纪要类能力</td><td>文本</td><td>API 文档曾出现听悟-Turbo / Plus、千问-Max（自定义 Prompt 相关历史）</td><td>通义/阿里云</td><td>API 侧能力可选叠加</td><td><span class="tag tag-ok">已确认</span>能力名；型号细节待核</td></tr>
+        <tr><td>翻译</td><td>语音/文本</td><td>实时/离线翻译能力</td><td>阿里云</td><td>可选开关（API）</td><td><span class="tag tag-ok">已确认</span></td></tr>
+        <tr><td>PPT 提取</td><td>视频→图文</td><td>多模态 PPT 提取</td><td>阿里云</td><td>可选</td><td><span class="tag tag-ok">已确认</span></td></tr>
+      </tbody>
+    </table>
+    <h4>钱怎么收</h4>
+    <ul>
+      <li><span class="tag tag-ok">已确认</span><b>C 端：</b>「权益加油站」——每日登录赠 <b>10 小时</b>转写时长；邀 1 名好友注册登录赠 30 小时；口令盲盒最高 100 小时一次；绑定阿里云盘最高 200 小时。弹窗文案「每日登录自动获得 10 小时转写时长」。未见 C 端人民币价目表。</li>
+      <li><span class="tag tag-ok">已确认</span><b>API 新版（元/小时）：</b>ASR 实时或文件 0.6；大模型单项 0.064（多能力叠加）；质检/内容提取 0.13；PPT 多模态 0.64；实时翻译 4；离线翻译 0.5。新用户可试用 90 天（实时 48h/天、文件 2h/天）。来源：阿里云计费说明。</li>
+      <li><span class="tag tag-warn">待确认核实</span>C 端「公测期免费」角标与赠时长规则如何衔接到正式商用个人付费，页面未写死。</li>
+    </ul>
+
+    <h3>05 基础层 — 什么是别人买不到的？</h3>
+    <table>
+      <thead><tr><th>买得到</th><th>买不到 / 难买到</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>通用大模型 API、通用 ASR 竞品、会议机器人品类</td>
+          <td>阿里云账号体系与企业 API/OSS 回调一体化；听悟与通义/阿里云盘入口；长期使用沉淀的「我的记录」与组织侧项目配置</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><span class="tag tag-ok">已确认</span>最厚一层更像 <b>基础层（云与账号/数据落点）+ 模型层（ASR+通义能力打包）</b>，技术层编排相对标准化（Workflow）。竞品多，单靠 UI 难形成深壁垒。</p>
+  </section>
+
+  <section id="s6">
+    <h2>（六）架构总结</h2>
+    <div class="arch">
+      <div class="box"><b>用户需求场景</b>开会 / 网课 / 播客 · 要转写与纪要</div>
+      <div class="box"><b>用户层</b>三入口（实时 · 上传 · 播客）→ 登录墙 → 记录详情（播放器 · 原文 · 智能速览 · 笔记）→ 分享收藏导出</div>
+      <div class="box"><b>技术层</b>Workflow：ASR → 可选 LLM 能力包；人在登录与发起；弱确认点</div>
+      <div class="box"><b>模型层</b>ASR + 摘要/章节/发言总结/待办/关键词/翻译/PPT… · C 端赠时长 · API 按小时叠加</div>
+      <div class="box"><b>基础层</b>阿里云账号 · 记录存储 · 企业 API/OSS · 云盘绑定</div>
+    </div>
+  </section>
+
+  <section id="s7">
+    <h2>（七）待核实二次验证清单</h2>
+    <ul class="verify">
+      <li><b>V1</b> 登录后完整走一遍「实时记录」：确认点、停录、失败提示、是否扣/退时长。→ 影响用户层异常四条、技术层确认点。</li>
+      <li><b>V2</b> 实测上传一条短音频：导出格式、局部重生成、说话人改名。→ 影响交付与「不满意」异常。</li>
+      <li><b>V3</b> 打开「如何在手机上使用」与微信小程序，核对是否与网页能力一致。→ 影响形态描述。</li>
+      <li><b>V4</b> C 端是否存在人民币订阅/加油包价目（不仅赠时长）。→ 影响模型层成本。</li>
+      <li><b>V5</b> C 端实际调用的模型名是否在设置/关于里暴露。→ 影响模型清单「已确认」级别。</li>
+      <li><b>V6</b> 失败退时长、存储上限政策原文。→ 影响异常与基础层。</li>
+    </ul>
+  </section>
+
+  <section id="s8">
+    <h2>附录 · 链接清单</h2>
+    <ul>
+      <li>官网：<a href="https://tingwu.aliyun.com/">https://tingwu.aliyun.com/</a></li>
+      <li>App Home：<a href="https://tingwu.aliyun.com/home">https://tingwu.aliyun.com/home</a></li>
+      <li>公开样例：<a href="https://tingwu.aliyun.com/doc/transcripts/gpjbqkvb2gknk2ao">示例上课记录</a></li>
+      <li>C 端帮助：<a href="https://tingwu.aliyun.com/helpcenter/">帮助中心</a> · <a href="https://tingwu.aliyun.com/helpcenter/5c2f22">权益加油站</a></li>
+      <li>API 功能：<a href="https://help.aliyun.com/zh/tingwu/features">功能特性</a></li>
+      <li>API 计费：<a href="https://help.aliyun.com/zh/tingwu/pricing-and-billing-rules">计费说明</a></li>
+    </ul>
+    <p class="muted">浏览器实测截图已在会话中采集（首页、登录墙、样例、权益页、API 价表）；本地资源文件未全部持久化到本报告目录。需要附图版可再说一声我补导出。</p>
+  </section>
+
+  <footer>生成自 AI 产品拆解 Skill · 2026-10-19 Asia/Shanghai · 禁止把「待核实」当已确认引用</footer>
+</div>
+</body>
+</html>
