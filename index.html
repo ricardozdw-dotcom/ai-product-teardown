@@ -1,41 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>AI 产品拆解 Skill</title>
-<style>
-  :root { color-scheme: light dark; }
-  body { font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Noto Sans SC", sans-serif; line-height: 1.65; max-width: 720px; margin: 2.5rem auto; padding: 0 1.25rem; }
-  h1 { font-size: 1.75rem; margin-bottom: .35rem; }
-  .sub { opacity: .75; margin-bottom: 1.75rem; }
-  a { color: #1a6fb5; }
-  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
-  pre { background: rgba(127,127,127,.12); padding: 1rem; border-radius: 8px; overflow: auto; }
-  .card { border: 1px solid rgba(127,127,127,.25); border-radius: 12px; padding: 1rem 1.1rem; margin: 1.25rem 0; }
-  ul { padding-left: 1.2rem; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI 产品拆解 Skill：用五问五层拆解 AI 产品，先取证再判断，输出飞书文档、Markdown 或 HTML 报告。查看方法、安装步骤与通义听悟示例。">
+  <meta name="theme-color" content="#f6f8fc">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI 产品拆解 — 从产品表面，拆到设计逻辑">
+  <meta property="og:description" content="五问五层，证据可追溯。让 AI 产品分析形成一份可答辩、可复用的报告。">
+  <meta property="og:url" content="https://ricardozdw-dotcom.github.io/ai-product-teardown/">
+  <link rel="canonical" href="https://ricardozdw-dotcom.github.io/ai-product-teardown/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='11' fill='%233f55d9'/%3E%3Cpath d='m10 14 10-5 10 5-10 5zm0 6 10 5 10-5M10 26l10 5 10-5' fill='none' stroke='white' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <title>AI 产品拆解 Skill · 五问五层，先取证再判断</title>
+  <style>
+    :root{--ink:#182139;--muted:#616c82;--brand:#4055d8;--brand-dark:#3042b8;--line:#e1e6ef;--paper:#fff;--wash:#f6f8fc;--green:#216c50;--amber:#8c5d15;--red:#a14a46;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;color:var(--ink);background:var(--paper);font:16px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-underline-offset:4px}button{font:inherit}a,button{-webkit-tap-highlight-color:transparent}:focus-visible{outline:3px solid #8796fa;outline-offset:5px}::selection{background:#dfe4ff}.wrap{width:min(1120px,calc(100% - 64px));margin-inline:auto}.skip{position:fixed;top:-100px;left:20px;z-index:100;background:#fff;padding:12px 20px;border:2px solid var(--brand)}.skip:focus{top:12px}
+    .site-header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}.header-inner{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;font-weight:750;font-size:17px;white-space:nowrap}.brand-mark{width:32px;height:32px;color:var(--brand)}.brand small{font:10px var(--mono);letter-spacing:.5px;color:var(--muted);padding:4px 6px;background:var(--wash);border:1px solid var(--line);border-radius:4px;margin-left:3px}.nav{display:flex;align-items:center;gap:27px;font-size:13px;color:#59647a}.nav a{text-decoration:none}.nav a:hover{color:var(--brand)}.nav .repo-link{border:1px solid var(--line);padding:6px 13px;border-radius:7px;display:flex;align-items:center;gap:7px}.arrow{font-size:16px;line-height:1}
+    .hero{padding:86px 0 78px;background:linear-gradient(155deg,#fff 28%,#f4f6fd 100%);border-bottom:1px solid var(--line)}.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:68px}.eyebrow{display:flex;align-items:center;gap:9px;font:11px var(--mono);letter-spacing:1.3px;color:#626e8b}.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand)}h1{font-size:clamp(42px,4.8vw,64px);line-height:1.16;letter-spacing:-2.2px;margin:22px 0 22px;font-weight:780}.hero-line{font-size:clamp(22px,2.4vw,31px);line-height:1.5;letter-spacing:-.7px;font-weight:650;margin:0 0 18px}.hero-line em{font-style:normal;color:var(--brand)}.lead{color:var(--muted);font-size:15px;max-width:460px;margin:0}.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:29px}.button{display:inline-flex;align-items:center;justify-content:center;gap:14px;text-decoration:none;font-size:14px;font-weight:650;border:1px solid var(--line);background:white;border-radius:7px;padding:11px 19px;cursor:pointer;transition:background .15s,color .15s}.button.primary{background:var(--brand);border-color:var(--brand);color:white}.button.primary:hover{background:var(--brand-dark)}.button.secondary:hover{background:var(--wash);border-color:#bdc7e8}.hero-note{display:flex;gap:18px;flex-wrap:wrap;margin:20px 0 0;font-size:11px;color:#79839a}.hero-note span::before{content:"✓";color:#5b7291;margin-right:5px}
+    .report-preview{background:white;border:1px solid #dce2f0;border-radius:12px;box-shadow:0 18px 55px -28px #6776ab42;transform:rotate(1deg);overflow:hidden}.preview-bar{padding:14px 19px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font:10px var(--mono);color:#7b849b;background:#fbfcff}.file-dot{display:inline-block;width:6px;height:6px;border-radius:2px;background:#a9b4d9;margin-right:7px}.preview-body{padding:26px}.preview-kicker{font-size:10px;letter-spacing:1.1px;color:#8891a6}.preview-body h2{font-size:21px;line-height:1.5;margin:8px 0 5px;letter-spacing:-.5px}.preview-caption{font-size:11px;color:#8891a6;margin:0 0 20px}.preview-rows{list-style:none;padding:0;margin:0}.preview-rows li{display:grid;grid-template-columns:24px 1fr auto;gap:9px;align-items:center;padding:10px 0;border-top:1px solid #edf0f6;font-size:12px}.preview-rows .num{font:10px var(--mono);color:#919bb2}.preview-rows .tiny{font-size:9px;color:#6775a1;background:#f0f3fc;border-radius:4px;padding:2px 6px}.preview-end{margin-top:17px;background:#f6f8fc;padding:12px 13px;border:1px dashed #d8dfef;border-radius:6px;font-size:11px;color:#69758e}.preview-end strong{color:var(--ink);font-weight:600}.formats{display:flex;gap:7px;margin-top:19px}.formats span{font:9px var(--mono);padding:4px 7px;border:1px solid #e0e5ef;border-radius:4px;color:#75819c}.formats span:last-child{background:#eef1ff;border-color:#d8dfff;color:#4055c1}
+    section.content{padding:80px 0;border-bottom:1px solid var(--line)}.section-top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:36px}.section-label{font:10px var(--mono);letter-spacing:1.8px;color:var(--brand);margin:0 0 12px}.section-top h2,.section-heading{font-size:32px;line-height:1.45;letter-spacing:-.8px;margin:0;font-weight:700}.section-intro{color:var(--muted);font-size:14px;margin:0;max-width:450px;justify-self:end}.audiences{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}.audience{border-top:2px solid #dfe5f2;padding-top:22px}.audience .index{font:10px var(--mono);color:#99a3b9}.audience h3{font-size:18px;margin:10px 0}.audience p{font-size:13px;line-height:1.9;color:var(--muted);margin:0}.audience small{display:block;font-size:11px;color:#4055b3;margin-top:16px}
+    .method-section{background:var(--wash)}.method-list{border-top:1px solid #d9e0ec}.method-row{display:grid;grid-template-columns:45px 160px 1fr 220px;align-items:start;gap:20px;padding:25px 0;border-bottom:1px solid #d9e0ec}.method-n{font:12px var(--mono);color:#8a95ad;padding-top:5px}.method-layer{font-size:14px;font-weight:650;padding-top:1px}.method-question{font-size:17px;font-weight:650;line-height:1.55;margin:0}.method-detail{font-size:12px;color:var(--muted);margin:6px 0 0}.method-output{font-size:11px;color:#6f7d96;line-height:1.8;padding-top:2px}.method-output span{display:block;font:9px var(--mono);letter-spacing:.8px;color:#9aa3b6;margin-bottom:4px}.evidence-box{display:grid;grid-template-columns:1fr 1.55fr;gap:42px;padding:30px;margin-top:32px;background:white;border:1px solid var(--line);border-radius:9px}.evidence-box h3{font-size:18px;margin:0 0 7px;line-height:1.6}.evidence-box>div>p{font-size:12px;color:var(--muted);margin:0}.evidence-items{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.badge{display:inline-block;border-radius:4px;padding:3px 7px;font-size:10px;font-weight:600;white-space:nowrap}.badge.confirmed{background:#eaf5ef;color:var(--green)}.badge.pending{background:#fcf3df;color:var(--amber)}.badge.verify{background:#f9edeb;color:var(--red)}.evidence-items p{font-size:11px;line-height:1.8;color:var(--muted);margin:10px 0 0}.method-footnote{font-size:11px;color:#7c87a0;margin:22px 0 0}.method-footnote a{color:var(--brand)}
+    .usage-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}.usage-grid h2{margin-bottom:16px}.usage-grid .explain{font-size:14px;color:var(--muted);max-width:400px}.input-list{list-style:none;margin:24px 0 0;padding:0;font-size:12px;color:#64718b}.input-list li{display:flex;gap:10px;margin:12px 0}.input-list b{font-weight:600;color:#24314d}.input-list li::before{content:"↳";color:#8e9bc0}.prompt-panel{border:1px solid #dce2ef;border-radius:9px;background:#fcfdff;overflow:hidden}.panel-title{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:#f3f5fb;border-bottom:1px solid #e1e6f1;font:10px var(--mono);color:#75819b}.copy-button{font-size:11px;background:white;border:1px solid #d8deec;color:#53617d;border-radius:5px;padding:5px 9px;cursor:pointer;min-width:66px}.copy-button:hover{color:var(--brand);border-color:#9ca9e6}.prompt-panel pre{font:13px/2 var(--mono);color:#2d3d61;white-space:pre-wrap;overflow-wrap:anywhere;margin:0;padding:26px 23px}.prompt-note{padding:0 23px 22px;font-size:11px;color:#8290a7;margin:0}.scope-line{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:#77849c}.scope-line span{border:1px solid var(--line);border-radius:30px;padding:4px 11px}
+    .example-section{background:#fbfcff}.example-card{display:grid;grid-template-columns:1fr 1.1fr;gap:50px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:38px;background:white}.example-art{background:#f1f4fc;border:1px solid #e1e6f2;border-radius:7px;padding:24px 29px}.example-art .doc-label{font:9px var(--mono);letter-spacing:1.5px;color:#8995b0}.example-art h3{font-size:20px;line-height:1.6;margin:13px 0 22px}.chapter{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid #dce2ef;font-size:11px;color:#697791}.chapter .square{width:6px;height:6px;border:1px solid #92a1c1;border-radius:1px}.example-info .example-tag{font:10px var(--mono);letter-spacing:1px;color:var(--brand)}.example-info h3{font-size:25px;line-height:1.5;margin:11px 0 14px}.example-info p{font-size:13px;color:var(--muted);margin:0 0 22px}.example-meta{font-size:11px!important;color:#8791a8!important;margin-top:15px!important}.text-link{display:inline-flex;gap:12px;align-items:center;color:var(--brand);font-size:13px;font-weight:650;text-decoration:none}.text-link:hover{text-decoration:underline}
+    .install-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px}.install-copy h2{margin-bottom:16px}.install-copy p{font-size:13px;color:var(--muted)}.install-steps{list-style:none;padding:0;margin:0}.install-steps>li{position:relative;display:grid;grid-template-columns:30px 1fr;gap:17px;padding-bottom:27px}.install-steps>li:not(:last-child)::after{content:"";position:absolute;top:33px;bottom:4px;left:14px;width:1px;background:#e0e6ef}.step-number{width:29px;height:29px;display:grid;place-items:center;background:#eef1ff;border:1px solid #dbe1ff;border-radius:50%;color:var(--brand);font:10px var(--mono)}.install-steps h3{font-size:15px;margin:1px 0 7px}.install-steps p{font-size:12px;color:var(--muted);margin:0 0 10px}.install-steps a{color:var(--brand)}.inline-code{font:11px var(--mono);background:#f2f4fa;border:1px solid #e3e7f1;border-radius:4px;padding:2px 5px;overflow-wrap:anywhere}.install-note{font-size:11px!important;border-left:2px solid #d6dff3;padding-left:13px;margin-top:22px!important}.last-cta{margin-top:26px}.site-footer{padding:30px 0}.footer-inner{display:flex;justify-content:space-between;gap:24px;align-items:center;font-size:11px;color:#8b94a7}.footer-inner a{text-decoration:none}.footer-links{display:flex;gap:22px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:1000px){.hero-grid{gap:36px}.method-row{grid-template-columns:32px 130px 1fr 155px;gap:15px}.evidence-box{grid-template-columns:1fr;gap:22px}.usage-grid{gap:35px}.install-grid{gap:45px}.nav{gap:20px}}
+    @media(max-width:760px){html{scroll-padding-top:125px}.wrap{width:calc(100% - 40px)}.header-inner{flex-wrap:wrap;gap:8px;min-height:100px;padding:15px 0 13px}.brand{font-size:15px}.brand small{font-size:8px}.brand-mark{width:27px;height:27px}.nav{width:100%;justify-content:space-between;gap:10px;font-size:11px}.nav .repo-link{padding:3px 8px}.hero{padding:49px 0 44px}.hero-grid{grid-template-columns:1fr;gap:36px}h1{font-size:48px;margin-top:20px;letter-spacing:-1.8px}.hero-line{font-size:24px}.lead{font-size:14px;max-width:none}.report-preview{transform:none;max-width:530px;width:100%;justify-self:center}.preview-body{padding:22px}.hero-note{font-size:10px;gap:12px}section.content{padding:49px 0}.section-top{grid-template-columns:1fr;gap:14px;margin-bottom:26px}.section-top h2,.section-heading{font-size:26px}.section-intro{justify-self:start;max-width:none;font-size:13px}.audiences{grid-template-columns:1fr;gap:22px}.audience{padding-top:15px}.audience h3{margin:7px 0}.audience small{margin-top:9px}.method-row{grid-template-columns:27px 1fr;gap:8px 12px;padding:22px 0}.method-n{grid-column:1;grid-row:1/3}.method-layer{grid-column:2;color:#69799f;font-size:11px}.method-main{grid-column:2}.method-question{font-size:16px}.method-detail{font-size:12px}.method-output{grid-column:2;font-size:11px;margin-top:4px}.method-output span{display:inline;margin-right:8px}.evidence-box{padding:22px}.evidence-items{grid-template-columns:1fr;gap:16px}.evidence-items>div{display:grid;grid-template-columns:110px 1fr;align-items:start;gap:8px}.evidence-items .badge{justify-self:start}.evidence-items p{margin:0}.usage-grid,.example-card,.install-grid{grid-template-columns:1fr;gap:27px}.input-list{margin-top:15px}.prompt-panel pre{font-size:12px;padding:20px}.prompt-note{padding:0 20px 20px}.scope-line{margin-top:20px;gap:7px}.example-card{padding:23px}.example-art{padding:21px}.example-info h3{font-size:23px}.install-copy p{max-width:none}.footer-inner{align-items:flex-start;flex-direction:column;gap:15px}.footer-links{flex-wrap:wrap;gap:18px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+    @media print{.site-header{position:static}.nav,.copy-button{display:none}.hero{padding:30px 0}.hero-grid{gap:24px}.report-preview{transform:none;box-shadow:none}section.content{padding:30px 0}.wrap{width:100%}.method-row,.example-card,.install-steps>li{break-inside:avoid}body{font-size:12px}}
+  </style>
 </head>
 <body>
-  <h1>AI 产品拆解</h1>
-  <p class="sub">面向 Cursor / Grok Bot 的可复用 Skill：用五问五层拆解 AI 产品，输出飞书 / Markdown / HTML。</p>
+  <a class="skip" href="#main">跳到正文</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#" aria-label="AI 产品拆解首页">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x=".5" y=".5" width="31" height="31" rx="8" fill="#eff2ff" stroke="#e0e5fc"/><path d="m7 11 9-4 9 4-9 4-9-4Zm0 5 9 4 9-4M7 21l9 4 9-4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        AI 产品拆解 <small>SKILL</small>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#method">核心方法</a><a href="#usage">怎么使用</a><a href="#example">示例报告</a><a href="#install">安装</a>
+        <a class="repo-link" href="https://github.com/ricardozdw-dotcom/ai-product-teardown">GitHub <span class="arrow" aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">A SKILL FOR AI PRODUCT THINKING</div>
+          <h1 id="hero-title">AI 产品拆解</h1>
+          <p class="hero-line">从产品表面，<br>拆到<em>设计逻辑。</em></p>
+          <p class="lead">用五问五层拆解 AI 产品，先取证，再判断。<br>输出飞书文档、Markdown 或 HTML 报告，让每一次分析都可答辩、可复用。</p>
+          <div class="cta-row"><a class="button primary" href="#install">获取 Skill <span aria-hidden="true">↓</span></a><a class="button secondary" href="./examples-tingwu-teardown.html">查看拆解示例 <span aria-hidden="true">↗</span></a></div>
+          <p class="hero-note"><span>五问五层</span><span>证据可追溯</span><span>MIT 开源</span></p>
+        </div>
+        <div class="report-preview" aria-label="报告结构示意，不代表具体产品的分析结论">
+          <div class="preview-bar"><span><i class="file-dot"></i>product-teardown.html</span><span>结构示意</span></div>
+          <div class="preview-body">
+            <div class="preview-kicker">从一个真实场景开始</div>
+            <h2>一份报告，回答五个问题。</h2>
+            <p class="preview-caption">让界面、过程和结果，连成一张产品架构图。</p>
+            <ol class="preview-rows">
+              <li><span class="num">01</span><span>用户为什么用它？</span><span class="tiny">需求场景</span></li>
+              <li><span class="num">02</span><span>怎么用它把事做完？</span><span class="tiny">用户层</span></li>
+              <li><span class="num">03</span><span>哪一步 AI 做，哪一步人做？</span><span class="tiny">技术层</span></li>
+              <li><span class="num">04</span><span>用什么模型，花多少钱？</span><span class="tiny">模型层</span></li>
+              <li><span class="num">05</span><span>什么是别人买不到的？</span><span class="tiny">基础层</span></li>
+            </ol>
+            <div class="preview-end"><strong>结论 + 证据来源 + 待核实项</strong><br>把判断的依据，和还不知道的部分一起交付。</div>
+            <div class="formats" aria-label="支持的报告形式"><span>FEISHU</span><span>MARKDOWN</span><span>HTML REPORT</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content" aria-labelledby="audience-title">
+      <div class="wrap">
+        <div class="section-top"><div><p class="section-label">01 / WHO IT IS FOR</p><h2 id="audience-title">让分析，有一套能复用的思路。</h2></div><p class="section-intro">适合需要理解 AI 产品、表达产品判断，或沉淀拆解方法的人。从具体产品出发，不停在功能清单。</p></div>
+        <div class="audiences">
+          <article class="audience"><span class="index">FOR PRODUCT MANAGERS</span><h3>AI 产品经理</h3><p>从用户场景、交互和人机分工出发，理解一款产品如何把目标变成结果。</p><small>看清设计选择，找到可借鉴之处</small></article>
+          <article class="audience"><span class="index">FOR RESEARCH &amp; LEARNING</span><h3>产品研究与学习者</h3><p>把零散截图、体验和公开信息整理成分层报告，讲清楚结论、依据和信息缺口。</p><small>让一次体验，成为可答辩的分析</small></article>
+          <article class="audience"><span class="index">FOR PRODUCT TEAMS</span><h3>需要共同语言的团队</h3><p>用相同的问题讨论竞品，判断一个 Demo 距离完整产品，还缺哪些关键环节。</p><small>从功能讨论，走向完整产品判断</small></article>
+        </div>
+      </div>
+    </section>
+    <section class="content method-section" id="method" aria-labelledby="method-title">
+      <div class="wrap">
+        <div class="section-top"><div><p class="section-label">02 / THE METHOD</p><h2 id="method-title">五问五层，一层层拆开。</h2></div><p class="section-intro">先确认产品形态，再取证，按固定顺序回答五个问题。把看得到的行为，还原为有依据的产品结构。</p></div>
+        <div class="method-list">
+          <article class="method-row"><span class="method-n">01</span><div class="method-layer">用户需求场景</div><div class="method-main"><h3 class="method-question">用户为什么用它？</h3><p class="method-detail">谁在什么场景下，为了解决什么问题使用它？B 端再看使用者、买单者和验收者。</p></div><div class="method-output"><span>OUTPUT</span>一句话定位 · 用户与场景</div></article>
+          <article class="method-row"><span class="method-n">02</span><div class="method-layer">用户层</div><div class="method-main"><h3 class="method-question">怎么用它把这件事做完？</h3><p class="method-detail">入口 → 输入 → 过程 → 输出 → 交付。还要看信息不足、失败、改需求和不满意时怎么办。</p></div><div class="method-output"><span>OUTPUT</span>用户旅程 · 确认点与异常</div></article>
+          <article class="method-row"><span class="method-n">03</span><div class="method-layer">技术层</div><div class="method-main"><h3 class="method-question">哪一步 AI 做，哪一步人做，怎么做？</h3><p class="method-detail">还原分工与确认点，判断 Chatbot、Workflow、Agent 或多 Agent，并写清判断依据。</p></div><div class="method-output"><span>OUTPUT</span>人机分工表 · 技术结构</div></article>
+          <article class="method-row"><span class="method-n">04</span><div class="method-layer">模型层</div><div class="method-main"><h3 class="method-question">每一步用什么模型，花多少钱？</h3><p class="method-detail">核对模态、型号或档位、自研或外接、能否替换，再看订阅、按次和积分等收费。</p></div><div class="method-output"><span>OUTPUT</span>模型清单 · 单次成本线索</div></article>
+          <article class="method-row"><span class="method-n">05</span><div class="method-layer">基础层</div><div class="method-main"><h3 class="method-question">什么是别人买不到的？</h3><p class="method-detail">区分通用能力与独有积累，检查数据、接口权限、组织上下文和沉淀的方法。</p></div><div class="method-output"><span>OUTPUT</span>壁垒判断 · 最厚的一层</div></article>
+        </div>
+        <aside class="evidence-box" aria-labelledby="evidence-title"><div><h3 id="evidence-title">每条结论，都要有证据身份。</h3><p>不把推测写成事实。拿不准就再查、再验证，信息不足时保留未知。</p></div><div class="evidence-items"><div><span class="badge confirmed">已确认</span><p>直接可见的事实，附截图编号或原文链接。</p></div><div><span class="badge pending">待确认核实</span><p>写明推断依据，以及还需补充什么。</p></div><div><span class="badge verify">二次验证清单</span><p>独立汇总缺什么、怎么补、影响哪一节。</p></div></div></aside>
+        <p class="method-footnote">最后汇成一张架构图，并附来源索引与待核实清单。完整规则以 <a href="./SKILL.md">SKILL.md</a> 为准。</p>
+      </div>
+    </section>
+    <section class="content" id="usage" aria-labelledby="usage-title">
+      <div class="wrap">
+        <div class="usage-grid"><div><p class="section-label">03 / HOW TO USE</p><h2 class="section-heading" id="usage-title">把产品交给 Agent，<br>把问题问到关键处。</h2><p class="explain">安装 Skill 后，用一句话触发。告诉助手产品名、产品形态和希望交付的格式；有官网和一手材料，也一起提供。</p><ul class="input-list"><li><span><b>网页产品</b>：浏览器走核心路径，关键步骤截图。</span></li><li><span><b>手机 App</b>：先查公开资料，缺失环节再补图。</span></li><li><span><b>其他形态</b>：结合可操作环境、文档与调用记录取证。</span></li></ul></div><div><div class="prompt-panel"><div class="panel-title"><span>给你的 Agent</span><button class="copy-button" type="button" data-copy="prompt" aria-label="复制示例触发语">复制</button></div><pre id="prompt">按 AI 产品拆解 Skill 拆 通义听悟。
 
-  <div class="card">
-    <p><strong>仓库文件</strong></p>
-    <ul>
-      <li><code>SKILL.md</code> — Skill 正文（复制到 Agent 的 workflows 即可用）</li>
-      <li><a href="./examples-tingwu-teardown.html">通义听悟拆解示例</a>（HTML 报告）</li>
-    </ul>
-  </div>
+产品形态：网页产品
+官方入口：https://tingwu.aliyun.com/
+输出形式：HTML 报告
 
-  <h2>怎么用</h2>
-  <ol>
-    <li>把本仓库的 <code>SKILL.md</code> 放进 Agent 的 Skill / workflows 目录。</li>
-    <li>对助手说：「按 AI 产品拆解 Skill 拆 XXX」，并指定输出形态（飞书 / Markdown / HTML）。</li>
-    <li>先确认产品形态（网页 / App / 其他），再取证；结论标「已确认 / 待确认核实」，文末附二次验证清单。</li>
-  </ol>
-
-  <h2>源码</h2>
-  <p><a href="https://github.com/ricardozdw-dotcom/ai-product-teardown">github.com/ricardozdw-dotcom/ai-product-teardown</a></p>
+请按五问五层分析，附证据来源，
+并单独列出待核实二次验证清单。</pre><p class="prompt-note">把产品名、入口和输出形式换成你的研究对象即可。</p></div><div class="scope-line"><span>飞书文档</span><span>Markdown</span><span>HTML 报告</span></div></div></div>
+      </div>
+    </section>
+    <section class="content example-section" id="example" aria-labelledby="example-title">
+      <div class="wrap">
+        <div class="section-top"><div><p class="section-label">04 / SEE THE OUTPUT</p><h2 id="example-title">先看一份实际拆解。</h2></div><p class="section-intro">从报告结构到证据标记，看看方法如何落到具体产品。示例保留自己的取证范围与待核实项。</p></div>
+        <article class="example-card"><div class="example-art" aria-label="通义听悟示例的章节结构示意"><span class="doc-label">EXAMPLE / HTML REPORT</span><h3>通义听悟<br>音视频智能纪要产品拆解</h3><div class="chapter"><span>产品介绍与取证范围</span><i class="square"></i></div><div class="chapter"><span>用户旅程与人机分工</span><i class="square"></i></div><div class="chapter"><span>模型、成本与壁垒</span><i class="square"></i></div><div class="chapter"><span>架构总结与二次验证</span><i class="square"></i></div></div><div class="example-info"><span class="example-tag">通义听悟 · 示例报告</span><h3>有结论，也交代<br>结论的边界。</h3><p>报告包含产品定位、用户旅程、Workflow 形态判断、模型与收费线索，以及独立待核实清单。公开资料与未完成的实测环节分别说明。</p><a class="text-link" href="./examples-tingwu-teardown.html">阅读完整 HTML 示例 <span aria-hidden="true">↗</span></a><p class="example-meta">本仓库内的静态报告，无需登录即可阅读。</p></div></article>
+      </div>
+    </section>
+    <section class="content" id="install" aria-labelledby="install-title">
+      <div class="wrap install-grid">
+        <div class="install-copy"><p class="section-label">05 / GET STARTED</p><h2 class="section-heading" id="install-title">带走方法，<br>开始下一次拆解。</h2><p>一份 <span class="inline-code">SKILL.md</span>，放进你所用 Agent 的 workflows / skills 目录，按自然语言触发。</p><div class="last-cta"><a class="button primary" href="./SKILL.md" download="SKILL.md">下载 SKILL.md <span aria-hidden="true">↓</span></a></div><p class="install-note">这里只提供 Skill 与示例。执行时使用你的 Agent 和可用工具；飞书写入需要相应登录或连接能力，无连接器时先交付 Markdown。</p></div>
+        <ol class="install-steps"><li><span class="step-number">1</span><div><h3>获取 Skill 正文</h3><p>下载文件，或打开 <a href="https://github.com/ricardozdw-dotcom/ai-product-teardown/blob/main/SKILL.md">GitHub 上的 SKILL.md</a>，复制完整内容。</p></div></li><li><span class="step-number">2</span><div><h3>放入 Agent workflows / skills</h3><p>将文件复制到所用 Agent 支持的目录，按该工具的约定保存与加载。不同工具的目录约定可能不同。</p></div></li><li><span class="step-number">3</span><div><h3>用自然语言触发</h3><p><span class="inline-code">按 AI 产品拆解 Skill 拆 XXX</span></p><p>补充产品形态，指定飞书文档、Markdown 或 HTML 报告。有官网、截图或录屏时一并提供。</p><a class="text-link" href="#usage">复制一条完整示例 <span aria-hidden="true">↑</span></a></div></li></ol>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><span>AI 产品拆解 · 让产品判断有据可循。</span><div class="footer-links"><a href="./SKILL.md">Skill 正文</a><a href="./examples-tingwu-teardown.html">通义听悟示例</a><a href="https://github.com/ricardozdw-dotcom/ai-product-teardown">GitHub</a><a href="./LICENSE">MIT License</a></div></div></footer>
+  <p class="sr-only" id="copy-status" role="status" aria-live="polite"></p>
+  <script>
+    document.querySelectorAll('[data-copy]').forEach(function(button){
+      button.addEventListener('click',async function(){
+        var source=document.getElementById(button.dataset.copy);
+        var status=document.getElementById('copy-status');
+        try {
+          if(!navigator.clipboard) throw new Error('Clipboard unavailable');
+          await navigator.clipboard.writeText(source.textContent.trim());
+          button.textContent='已复制'; status.textContent='示例触发语已复制到剪贴板。';
+        } catch(error) {
+          var range=document.createRange();range.selectNodeContents(source);
+          var selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);
+          button.textContent='已选中文本';status.textContent='已选中示例，请使用系统复制快捷键。';
+        }
+      });
+    });
+  </script>
 </body>
 </html>

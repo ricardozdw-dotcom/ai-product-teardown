@@ -1,8 +1,11 @@
 # AI 产品拆解 Skill
 
+## 🌐 [官网 / 在线介绍](https://ricardozdw-dotcom.github.io/ai-product-teardown/)
+
+官网集中介绍 Skill 的适用人群、五问五层方法、证据标签、触发方式和安装步骤，并提供 Skill 正文与通义听悟示例的直接入口。
+
 把一款 AI 产品按 **五问五层** 拆开，产出可答辩、可复用的分层拆解文档（飞书 / Markdown / HTML）。
 
-- 在线说明页：[GitHub Pages](https://ricardozdw-dotcom.github.io/ai-product-teardown/)
 - Skill 正文：[`SKILL.md`](./SKILL.md)
 - 示例报告：[通义听悟 HTML](./examples-tingwu-teardown.html)
 
